@@ -2,8 +2,8 @@ Package: ParallelLogger
 Type: Package
 Title: Support for Parallel Computation, Logging, and Function
         Automation
-Version: 1.0.0
-Date: 2018-07-05
+Version: 1.0.1
+Date: 2018-10-25
 Authors@R: c(
     person("Martijn", "Schuemie", email = "schuemie@ohdsi.org", role = c("aut", "cre")),
     person("Marc", "Suchard", role = c("aut")),
@@ -18,11 +18,13 @@ VignetteBuilder: knitr
 Depends: R (>= 3.1.0)
 Imports: snow, XML, jsonlite, methods, utils
 Suggests: testthat, shiny, DT, knitr, rmarkdown
+URL: https://github.com/OHDSI/ParallelLogger
+BugReports: https://github.com/OHDSI/ParallelLogger/issues
 NeedsCompilation: no
-RoxygenNote: 6.0.1.9000
-Packaged: 2018-07-05 13:16:33 UTC; MSCHUEMI
+RoxygenNote: 6.1.0
+Packaged: 2018-10-25 11:06:46 UTC; mschuemi
 Author: Martijn Schuemie [aut, cre],
   Marc Suchard [aut],
   Observational Health Data Science and Informatics [cph]
 Repository: CRAN
-Date/Publication: 2018-07-05 18:00:06 UTC
+Date/Publication: 2018-10-25 12:50:07 UTC
