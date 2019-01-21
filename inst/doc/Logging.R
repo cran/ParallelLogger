@@ -71,6 +71,34 @@ unlink(logFileName)
 #                                                                    fileName = logFileName))))
 
 ## ---- eval=FALSE---------------------------------------------------------
+#  mailSettings <- list(from = "someone@gmail.com",
+#                        to = c("someone_else@gmail.com"),
+#                        smtp = list(host.name = "smtp.gmail.com",
+#                                    port = 465,
+#                                    user.name = "someone@gmail.com",
+#                                    passwd = "super_secret!",
+#                                    ssl = TRUE),
+#                        authenticate = TRUE,
+#                        send = TRUE)
+#  
+#  logger <- createLogger(name = "EMAIL",
+#                         threshold = "FATAL",
+#                         appenders = list(createEmailAppender(layout = layoutEmail,
+#                                                              mailSettings = mailSettings)))
+#  registerLogger(logger)
+#  
+#  logFatal("No more data to process")
+
+## ---- eval=FALSE---------------------------------------------------------
+#  addDefaultEmailLogger(mailSettings)
+
+## ---- eval=FALSE---------------------------------------------------------
+#   registerLogger(createLogger(name = "DEFAULT",
+#                               threshold = "FATAL",
+#                               appenders = list(createEmailAppender(layout = layoutEmail,
+#                                                                    mailSettings = mailSettings))))
+
+## ---- eval=FALSE---------------------------------------------------------
 #  clearLoggers()
 #  addDefaultFileLogger(logFileName)
 #  
