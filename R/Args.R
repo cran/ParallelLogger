@@ -1,6 +1,6 @@
 # @file Args.R
 #
-# Copyright 2019 Observational Health Data Sciences and Informatics
+# Copyright 2020 Observational Health Data Sciences and Informatics
 #
 # This file is part of ParallelLogger
 # 
@@ -335,7 +335,7 @@ saveSettingsToJson <- function(object, fileName) {
 #' Converts a JSON string to a settings object
 #'
 #' @details
-#' onverts a JSON string generated using the \code{\link{convertSettingsToJson}} function to a settings objec, restoring object classes and attributes.
+#' Converts a JSON string generated using the \code{\link{convertSettingsToJson}} function to a settings object, restoring object classes and attributes.
 #'
 #' @param json   A JSON string.
 #'

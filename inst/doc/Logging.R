@@ -1,4 +1,4 @@
-## ---- echo = FALSE, message = FALSE, warning = FALSE---------------------
+## ---- echo = FALSE, message = FALSE, warning = FALSE--------------------------
 library(ParallelLogger)
 knitr::opts_chunk$set(
   cache = FALSE,
@@ -6,7 +6,7 @@ knitr::opts_chunk$set(
   error = FALSE,
   tidy = FALSE)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 logger <- createLogger(name = "SIMPLE",
                        threshold = "INFO",
                        appenders = list(createConsoleAppender(layout = layoutTimestamp)))
@@ -17,7 +17,7 @@ logTrace("This event is below the threshold (INFO)")
 
 logInfo("Hello world")
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 clearLoggers()
 
 logger <- createLogger(name = "SIMPLE",
@@ -28,21 +28,21 @@ registerLogger(logger)
 
 logInfo("Hello world")
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  addDefaultConsoleLogger()
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  registerLogger(createLogger(name = "SIMPLE",
 #                              threshold = "INFO",
 #                              appenders = list(createConsoleAppender(layout = layoutSimple))))
 
-## ---- echo = FALSE, message = FALSE, warning = FALSE---------------------
+## ---- echo = FALSE, message = FALSE, warning = FALSE--------------------------
 logFileName <- tempfile()
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  logFileName <- "log.txt"
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 logger <- createLogger(name = "PARALLEL",
                        threshold = "TRACE",
                        appenders = list(createFileAppender(layout = layoutParallel,
@@ -55,22 +55,22 @@ logDebug("There are ",  length(getLoggers()), " loggers")
 
 logInfo("Hello world")
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 writeLines(readChar(logFileName, file.info(logFileName)$size))
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 unlink(logFileName)
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  addDefaultFileLogger(logFileName)
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  registerLogger(createLogger(name = "DEFAULT",
 #                              threshold = "TRACE",
 #                              appenders = list(createFileAppender(layout = layoutParallel,
 #                                                                    fileName = logFileName))))
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  mailSettings <- list(from = "someone@gmail.com",
 #                        to = c("someone_else@gmail.com"),
 #                        smtp = list(host.name = "smtp.gmail.com",
@@ -89,16 +89,16 @@ unlink(logFileName)
 #  
 #  logFatal("No more data to process")
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  addDefaultEmailLogger(mailSettings)
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #   registerLogger(createLogger(name = "DEFAULT",
 #                               threshold = "FATAL",
 #                               appenders = list(createEmailAppender(layout = layoutEmail,
 #                                                                    mailSettings = mailSettings))))
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  clearLoggers()
 #  addDefaultFileLogger(logFileName)
 #  
@@ -112,7 +112,7 @@ unlink(logFileName)
 #  
 #  writeLines(readChar(logFileName, file.info(logFileName)$size))
 
-## ---- echo = FALSE, message = FALSE, warning = FALSE---------------------
+## ---- echo = FALSE, message = FALSE, warning = FALSE--------------------------
 # knitr seems to use the same hook to capture warnings and errors, so minor cheat here:
 clearLoggers()
 addDefaultFileLogger(logFileName)
@@ -121,7 +121,7 @@ logWarn("Warning: NAs introduced by coercion")
 logFatal("Error: object a not found")
 writeLines(readChar(logFileName, file.info(logFileName)$size))
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 unlink(logFileName) # Clean up log file from the previous example
 clearLoggers() # Clean up the loggers from the previous example
 
@@ -143,9 +143,9 @@ stopCluster(cluster)
 
 writeLines(readChar(logFileName, file.info(logFileName)$size))
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  launchLogViewer(logFileName)
 
-## ---- echo = FALSE, message = FALSE, warning = FALSE---------------------
+## ---- echo = FALSE, message = FALSE, warning = FALSE--------------------------
 unlink(logFileName)
 

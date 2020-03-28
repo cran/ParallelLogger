@@ -1,6 +1,6 @@
 # @file ParallelLogger.R
 #
-# Copyright 2019 Observational Health Data Sciences and Informatics
+# Copyright 2020 Observational Health Data Sciences and Informatics
 #
 # This file is part of ParallelLogger
 #
@@ -16,10 +16,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#' ParallelLogger
-#'
-#' @docType package
-#' @name ParallelLogger
+#' @keywords internal
+"_PACKAGE"
+
 #' @importFrom methods getFunction is
 #' @importFrom utils installed.packages install.packages menu capture.output help memory.limit setTxtProgressBar txtProgressBar
 NULL
