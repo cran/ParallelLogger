@@ -2,8 +2,8 @@ Package: ParallelLogger
 Type: Package
 Title: Support for Parallel Computation, Logging, and Function
         Automation
-Version: 1.1.2
-Date: 2020-03-18
+Version: 1.2.0
+Date: 2020-04-22
 Authors@R: c(
   person("Martijn", "Schuemie", email = "schuemie@ohdsi.org", role = c("aut", "cre")),
   person("Marc", "Suchard", role = c("aut")),
@@ -24,9 +24,9 @@ BugReports: https://github.com/OHDSI/ParallelLogger/issues
 NeedsCompilation: no
 RoxygenNote: 7.1.0
 Encoding: UTF-8
-Packaged: 2020-03-28 03:34:05 UTC; MSCHUEMI
+Packaged: 2020-04-22 07:29:51 UTC; MSCHUEMI
 Author: Martijn Schuemie [aut, cre],
   Marc Suchard [aut],
   Observational Health Data Science and Informatics [cph]
 Repository: CRAN
-Date/Publication: 2020-03-29 00:30:12 UTC
+Date/Publication: 2020-04-22 10:02:30 UTC

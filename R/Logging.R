@@ -22,12 +22,25 @@ registerDefaultHandlers <- function() {
   }
   options(error = logBaseError)
   
-  options(warning.expression = quote(
+  options(warning.expression = quote({
+    evaluate <- function(message, frameIndex) {
+      if (frameIndex < -20) {
+        return(as.character(force(message)))
+      } else {
+        text <- tryCatch(as.character(eval(message, envir = sys.frame(frameIndex))), error = function(x) "error")
+        if (text == "error") {
+          return(evaluate(message, frameIndex - 2))
+        } else {
+          return(text)
+        }
+      }
+    }
+    
     for (i in 1:sys.nframe()) {
       frame <- sys.call(-i)
       if (!is.null(frame) && length(frame) > 1) {
         if (is.language(frame[[1]]) && as.character(frame[[1]]) == "warning") {
-          ParallelLogger::logWarn(eval(frame[[2]], envir = sys.frame(-i - 1)))
+          ParallelLogger::logWarn(evaluate(frame[[2]], -i - 1))
           break
         } else if (as.character(frame[[1]]) == ".signalSimpleWarning") {
           ParallelLogger::logWarn(frame[[2]])
@@ -37,7 +50,8 @@ registerDefaultHandlers <- function() {
           break
         } 
       }
-    }))
+    }})
+  )
 }
 
 getDefaultLoggerSettings <- function() {
@@ -84,8 +98,9 @@ registerLogger <- function(logger) {
 #' @details
 #' Unregisters a logger from the logging system.
 #'
-#' @param x   Can either be an integer (e.g. 2 to remove the second logger), the name of the logger, or
-#'            the logger object itself.
+#' @param x       Can either be an integer (e.g. 2 to remove the second logger), the name of the logger, or
+#'                the logger object itself.
+#' @param silent  If TRUE, no warning will be issued if the logger is not found.
 #'
 #' @return
 #' Returns TRUE if the logger was removed.
@@ -93,7 +108,7 @@ registerLogger <- function(logger) {
 #' @template LoggingExample
 #'
 #' @export
-unregisterLogger <- function(x) {
+unregisterLogger <- function(x, silent = FALSE) {
   settings <- getLoggerSettings()
   if (is.integer(x) || is.numeric(x)) {
     if (x <= length(settings$loggers)) {
@@ -101,7 +116,9 @@ unregisterLogger <- function(x) {
       setLoggerSettings(settings)
       return(TRUE)
     } else {
-      warning("Could not find logger ", x)
+      if (!silent) {
+        warning("Could not find logger ", x)
+      }
       return(FALSE)
     }
   } else if (is.character(x)) {
@@ -112,7 +129,9 @@ unregisterLogger <- function(x) {
         return(TRUE)
       }
     }
-    warning("Could not find logger ", x)
+    if (!silent) {
+      warning("Could not find logger ", x)
+    }
     return(FALSE)
   } else if (is(x, "Logger")) {
     for (i in length(settings$loggers):1) {
@@ -123,7 +142,9 @@ unregisterLogger <- function(x) {
       }
     }
   }
-  warning("Could not find logger ", x)
+  if (!silent) {
+    warning("Could not find logger ", x)
+  }
   return(FALSE)
 }
 

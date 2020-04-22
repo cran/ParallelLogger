@@ -1,21 +1,47 @@
+ParallelLogger 1.2.0
+=====================
+
+Changes
+
+1. Errors in a cluster are now also logged by the remote thread. This allows for example for the stack trace to be captured. The e-mail logger will only be triggered by events in the main thread to avoid spam.
+
+2. Added the layoutErrorReport layout.
+
+3. Added overwrite and expirationTime arguments to createFileAppender.
+
+4. Added the addDefaultErrorReportLogger function. 
+
+5. Improved stack trace.
+
+6. Changed names of default loggers to DEFAULT_FILE_LOGGER, DEFAULT_EMAIL_LOGGER, and DEFAULT_ERRORREPORT_LOGGER.
+
+7. Added 'silent' argument to unregisterLogger function.
+
+Bugfixes
+
+1. Now walking up the stack to try to evaluate warning message. For example prevents 'wrn not found' errors when using tidyVerse packages.
+
+
 ParallelLogger 1.1.2
 =====================
 
-Bugfixes:
+Bugfixes
 
 1. Fixing error when ggplot2 (v3.3.0) throws a warning.
+
 
 ParallelLogger 1.1.1
 =====================
 
-Bugfixes:
+Bugfixes
 
 1. Call to .Deprecated() no longer causes silent crash.
+
 
 ParallelLogger 1.1.0
 =====================
 
-Changes:
+Changes
 
 1. Added e-mail appender and layout.
 
@@ -23,7 +49,7 @@ Changes:
 ParallelLogger 1.0.1
 =====================
 
-Changes:
+Changes
 
 1. When the folder containing the log file is deleted while logging, a warning is thrown (instead of an error), and the file appender is automatically deleted.
 
@@ -33,4 +59,4 @@ Changes:
 ParallelLogger 1.0.0
 =====================
 
-Changes: initial submission to CRAN
+initial submission to CRAN
