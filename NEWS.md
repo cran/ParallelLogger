@@ -1,5 +1,21 @@
+ParallelLogger 2.0.0
+====================
+
+Changes
+
+1. Simplifying argument functions.
+
+2. Dropping support for ff in favor of Andromeda.
+
+Bugfixes
+
+1. Fixing missing spaces in argument function documentation.
+
+2. More gracefully handling unnamed lists when saving and loading from JSON.
+
+
 ParallelLogger 1.2.0
-=====================
+====================
 
 Changes
 
@@ -23,7 +39,7 @@ Bugfixes
 
 
 ParallelLogger 1.1.2
-=====================
+====================
 
 Bugfixes
 
@@ -31,7 +47,7 @@ Bugfixes
 
 
 ParallelLogger 1.1.1
-=====================
+====================
 
 Bugfixes
 
@@ -39,7 +55,7 @@ Bugfixes
 
 
 ParallelLogger 1.1.0
-=====================
+====================
 
 Changes
 
@@ -47,7 +63,7 @@ Changes
 
 
 ParallelLogger 1.0.1
-=====================
+====================
 
 Changes
 
@@ -57,6 +73,6 @@ Changes
 
 
 ParallelLogger 1.0.0
-=====================
+====================
 
 initial submission to CRAN

@@ -75,7 +75,7 @@ createArgFunction <- function(functionName,
   parameterHelp <- iconv(unlist(parameterHelp), from = "UTF-8", to = "ASCII")
   argInfo$help <- ""
   for (i in 1:(length(parameterHelp)/2)) {
-    argInfo$help[argInfo$name == parameterHelp[i * 2 - 1]] <- gsub("\n", "", parameterHelp[i * 2])
+    argInfo$help[argInfo$name == parameterHelp[i * 2 - 1]] <- gsub("\n", " ", parameterHelp[i * 2])
   }
 
   if (length(rCode) != 0) {
@@ -120,17 +120,9 @@ createArgFunction <- function(functionName,
 
     rCode <- c(rCode, paste(start, argInfo$name[i], end, sep = ""))
   }
-  rCode <- c(rCode, "  # First: get default values:")
   rCode <- c(rCode, "  analysis <- list()")
   rCode <- c(rCode, paste0("  for (name in names(formals(", createFunArgsName, "))) {"))
   rCode <- c(rCode, "    analysis[[name]] <- get(name)")
-  rCode <- c(rCode, "  }")
-  rCode <- c(rCode, "  # Second: overwrite defaults with actual values:")
-  rCode <- c(rCode,
-             "  values <- lapply(as.list(match.call())[-1], function(x) eval(x, envir = sys.frame(-3)))")
-  rCode <- c(rCode, "  for (name in names(values)) {")
-  rCode <- c(rCode, "    if (name %in% names(analysis))")
-  rCode <- c(rCode, "      analysis[[name]] <- values[[name]]")
   rCode <- c(rCode, "  }")
   rCode <- c(rCode, "  class(analysis) <- \"args\"")
   rCode <- c(rCode, "  return(analysis)")
@@ -259,6 +251,9 @@ matchInList <- function(x, toMatch) {
 }
 
 convertAttrToMember <- function(object) {
+  if (is.function(object)) {
+    return(list(serialized_code = as.character(serialize(object, NULL))))
+  } else
   if (is.list(object)) {
     if (length(object) > 0) {
       for (i in 1:length(object)) {
@@ -279,6 +274,11 @@ convertAttrToMember <- function(object) {
 convertMemberToAttr <- function(object) {
   if (is.list(object)) {
     if (length(object) > 0) {
+      if (length(object) == 1 && !is.null(names(object)) && names(object) == "serialized_code") {
+        return(unserialize(
+          as.raw(sapply(object$serialized_code, strtoi, base = 16L))
+          ))
+      }
       for (i in 1:length(object)) {
         if (!is.null(object[[i]])) {
           object[[i]] <- convertMemberToAttr(object[[i]])
