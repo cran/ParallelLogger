@@ -1,17 +1,12 @@
 ## ---- echo = FALSE, message = FALSE, warning = FALSE--------------------------
 library(ParallelLogger)
-knitr::opts_chunk$set(
-  cache=FALSE,
-  comment = "#>",
-  error = FALSE,
-  tidy = FALSE)
 
 ## -----------------------------------------------------------------------------
 cluster <- makeCluster(numberOfThreads = 3)
 
 ## -----------------------------------------------------------------------------
 fun <- function(x, constant) {
-     return (x * constant)
+     return(x * constant)
 }
 
 ## -----------------------------------------------------------------------------

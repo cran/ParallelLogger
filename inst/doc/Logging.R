@@ -1,10 +1,5 @@
 ## ---- echo = FALSE, message = FALSE, warning = FALSE--------------------------
 library(ParallelLogger)
-knitr::opts_chunk$set(
-cache = FALSE,
-comment = "#>",
-error = FALSE,
-tidy = FALSE)
 
 ## -----------------------------------------------------------------------------
 logger <- createLogger(name = "SIMPLE",
@@ -32,7 +27,7 @@ logInfo("Hello world")
 #  addDefaultConsoleLogger()
 
 ## ---- eval=FALSE--------------------------------------------------------------
-#  registerLogger(createLogger(name = "SIMPLE",
+#  registerLogger(createLogger(name = "DEFAULT_CONSOLE_LOGGER",
 #                              threshold = "INFO",
 #                              appenders = list(createConsoleAppender(layout = layoutSimple))))
 
@@ -143,11 +138,11 @@ addDefaultFileLogger(logFileName)
 cluster <- makeCluster(3)
 
 fun <- function(x) {
-ParallelLogger::logInfo("The value of x is ", x)
-# Do something
-if (x == 6)
-ParallelLogger::logDebug("X equals 6")
-return(NULL)
+  ParallelLogger::logInfo("The value of x is ", x)
+  # Do something
+  if (x == 6)
+    ParallelLogger::logDebug("X equals 6")
+  return(NULL)
 }
 
 dummy <- clusterApply(cluster, 1:10, fun, progressBar = FALSE)
