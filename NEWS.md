@@ -1,3 +1,15 @@
+ParallelLogger 2.0.2
+====================
+
+Changes
+
+1. Log file viewer uses chunking to allow viewing of huge log files.
+
+Bugfixes
+
+1. Disabling capturing of errors and warnings during R Check and unit testing so R Check fails if an error occurs during testing.
+
+
 ParallelLogger 2.0.1
 ====================
 
@@ -7,7 +19,7 @@ Changes
 
 2. Allow override of name of default loggers.
 
-BugFixes
+Bugfixes
 
 1. Correct function attribution in log when using rlang `warn` or `abort`.
 

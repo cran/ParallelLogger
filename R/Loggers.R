@@ -1,6 +1,6 @@
 # @file Loggers.R
 #
-# Copyright 2020 Observational Health Data Sciences and Informatics
+# Copyright 2021 Observational Health Data Sciences and Informatics
 #
 # This file is part of ParallelLogger
 # 
@@ -124,7 +124,7 @@ addDefaultFileLogger <- function(fileName, name = "DEFAULT_FILE_LOGGER") {
 #' addDefaultEmailLogger(mailSettings, "My R session", test = TRUE)
 #' logFatal("Something bad")
 #'
-#' unregisterLogger("DEFAULT")
+#' unregisterLogger("DEFAULT_EMAIL_LOGGER")
 #'
 #' @export
 addDefaultEmailLogger <- function(mailSettings,

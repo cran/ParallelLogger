@@ -1,6 +1,6 @@
 # @file Appenders.R
 #
-# Copyright 2020 Observational Health Data Sciences and Informatics
+# Copyright 2021 Observational Health Data Sciences and Informatics
 #
 # This file is part of ParallelLogger
 # 
@@ -163,7 +163,7 @@ createEmailAppender <- function(layout = layoutEmail,
     }
     
     # Only main thread gets to send e-mails:
-    if (is.null(getOption("threadNumber"))) {
+    if (!is.null(getOption("threadNumber"))) {
       return()
     }
     

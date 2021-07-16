@@ -1,6 +1,6 @@
 # @file Logging.R
 #
-# Copyright 2020 Observational Health Data Sciences and Informatics
+# Copyright 2021 Observational Health Data Sciences and Informatics
 #
 # This file is part of ParallelLogger
 # 
@@ -16,9 +16,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+isRmdCheck <- function() {
+  return(Sys.getenv("_R_CHECK_PACKAGE_NAME_", "") != "")
+}
+
+isUnitTest <- function() {
+  return(tolower(Sys.getenv("TESTTHAT", "")) == "true")
+}
+
 registerDefaultHandlers <- function() {
+  if (isRmdCheck() || isUnitTest()) {
+    message("Either in Rmd Check or a unit test (or both). Not capturing errors and warnings in ParallelLogger")
+    return(NULL)
+  }
+  previousErrorHandler <- getOption("error")
+  
   logBaseError <- function() {
     logFatal(gsub("\n", " ", geterrmessage()))
+    if (!is.null(previousErrorHandler)) {
+      eval(previousErrorHandler)
+    }
   }
   options(error = logBaseError)
 
