@@ -1,15 +1,15 @@
 # @file Layouts.R
 #
-# Copyright 2021 Observational Health Data Sciences and Informatics
+# Copyright 2022 Observational Health Data Sciences and Informatics
 #
 # This file is part of ParallelLogger
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #     http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -74,10 +74,12 @@ layoutParallel <- function(level, message) {
   if (sys.nframe() > 4) {
     for (i in 4:sys.nframe()) {
       packageName <- utils::packageName(env = sys.frame(-i))
-      if (length(packageName) != 0 && !packageName %in% c("base",
-                                                          "snow",
-                                                          "ParallelLogger",
-                                                          "rlang")) {
+      if (length(packageName) != 0 && !packageName %in% c(
+        "base",
+        "snow",
+        "ParallelLogger",
+        "rlang"
+      )) {
         if (class(sys.call(-i)[[1]]) == "function") {
           # Using do.call without quotes means the function name is lost
           functionName <- ""
@@ -119,10 +121,10 @@ layoutStackTrace <- function(level, message) {
   }
   trace < .tidyStackTrace(limitedLabels(sys.calls()))
   output <- paste(c(sprintf("%s\t[%s]\t%s\t%s", time, threadLabel, level, message),
-                    trace,
-                    collapse = "\n"))
+    trace,
+    collapse = "\n"
+  ))
   return(output)
-
 }
 
 #' Logging layout for e-mail
@@ -194,16 +196,33 @@ layoutErrorReport <- function(level, message) {
   lines <- c(lines, paste("-", si$basePkgs))
   lines <- c(lines, "")
   lines <- c(lines, "Other attached packages:")
-  for (pkg in si$otherPkgs) lines <- c(lines,
-                                       paste("- ", pkg$Package, " (", pkg$Version, ")", sep = ""))
+  for (pkg in si$otherPkgs) {
+    lines <- c(
+      lines,
+      paste("- ", pkg$Package, " (", pkg$Version, ")", sep = "")
+    )
+  }
   return(lines)
 }
 
 .tidyStackTrace <- function(trace) {
+  # saveRDS(trace, sprintf("s:/temp/trace_%d.rds", length(trace)))
   if (is.null(getOption("threadNumber"))) {
-    trace <- trace[1:(length(trace) - 3)]
+    if (length(trace) > 4 && grepl("echoToConsole = FALSE", trace[length(trace) - 4])) {
+      # Captured via globalCallingHandlers(): 2 more layers to discard
+      offset <- 2
+    } else {
+      offset <- 0
+    }
+    trace <- trace[1:(length(trace) - 3 - offset)]
   } else {
-    trace <- trace[23:(length(trace) - 3)]
+    if (length(trace) > 5 && grepl("function \\(e\\).*ParallelLogger::log", trace[length(trace) - 5])) {
+      # Captured via withCallingHandlers(): 2 more layers to discard
+      offset <- 2
+    } else {
+      offset <- 0
+    }
+    trace <- trace[23:(length(trace) - 4 - offset)]
   }
   trace <- paste(1:length(trace), trace, sep = ": ")
   trace <- rev(trace)

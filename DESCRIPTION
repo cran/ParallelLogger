@@ -2,8 +2,8 @@ Package: ParallelLogger
 Type: Package
 Title: Support for Parallel Computation, Logging, and Function
         Automation
-Version: 2.0.2
-Date: 2021-7-15
+Version: 3.0.0
+Date: 2022-02-03
 Authors@R: c(
   person("Martijn", "Schuemie", email = "schuemie@ohdsi.org", role = c("aut", "cre")),
   person("Marc", "Suchard", role = c("aut")),
@@ -15,18 +15,18 @@ Description: Support for parallel computation with progress bar, and option to s
   parallel).
 License: Apache License 2.0
 VignetteBuilder: knitr
-Depends: R (>= 3.1.0)
+Depends: R (>= 4.0.0)
 Imports: snow, xml2, jsonlite, methods, utils
 Suggests: mailR, testthat, shiny, DT, knitr, rmarkdown
 URL: https://ohdsi.github.io/ParallelLogger/,
         https://github.com/OHDSI/ParallelLogger
 BugReports: https://github.com/OHDSI/ParallelLogger/issues
 NeedsCompilation: no
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Encoding: UTF-8
-Packaged: 2021-07-15 13:37:36 UTC; MSCHUEMI
+Packaged: 2022-02-04 05:42:12 UTC; mschuemi
 Author: Martijn Schuemie [aut, cre],
   Marc Suchard [aut],
   Observational Health Data Science and Informatics [cph]
 Repository: CRAN
-Date/Publication: 2021-07-16 07:30:28 UTC
+Date/Publication: 2022-02-04 10:10:13 UTC

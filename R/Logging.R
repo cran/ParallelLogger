@@ -1,78 +1,56 @@
 # @file Logging.R
 #
-# Copyright 2021 Observational Health Data Sciences and Informatics
+# Copyright 2022 Observational Health Data Sciences and Informatics
 #
 # This file is part of ParallelLogger
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #     http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-isRmdCheck <- function() {
-  return(Sys.getenv("_R_CHECK_PACKAGE_NAME_", "") != "")
+inTryCatchOrWithCallingHandlers <- function() {
+  return(any(grepl("(^tryCatch)|(^withCallingHandlers)", as.character(sys.status()$sys.calls))))
 }
 
-isUnitTest <- function() {
-  return(tolower(Sys.getenv("TESTTHAT", "")) == "true")
+conditionHandler <- function(condition) {
+  if (is(condition, "error")) {
+    log("FATAL", conditionMessage(condition), echoToConsole = FALSE)
+  } else if (is(condition, "warning")) {
+    log("WARN", conditionMessage(condition), echoToConsole = FALSE)
+  } else if (is(condition, "message")) {
+    log("INFO", conditionMessage(condition), echoToConsole = FALSE)
+  }
+}
+
+handlersRegistered <- function() {
+  handlers <- globalCallingHandlers()
+  if (length(handlers) == 0) {
+    return(FALSE)
+  } else {
+    return(any(sapply(handlers, function(x) isTRUE(all.equal(x, conditionHandler)))))
+  }
 }
 
 registerDefaultHandlers <- function() {
-  if (isRmdCheck() || isUnitTest()) {
-    message("Either in Rmd Check or a unit test (or both). Not capturing errors and warnings in ParallelLogger")
-    return(NULL)
+  if (!is.null(getOption("threadNumber")) || handlersRegistered()) {
+    return()
   }
-  previousErrorHandler <- getOption("error")
-  
-  logBaseError <- function() {
-    logFatal(gsub("\n", " ", geterrmessage()))
-    if (!is.null(previousErrorHandler)) {
-      eval(previousErrorHandler)
-    }
+  if (inTryCatchOrWithCallingHandlers()) {
+    message(paste(
+      "Currently in a tryCatch or withCallingHandlers block, so unable to add global calling handlers.",
+      "ParallelLogger will not capture R messages, errors, and warnings, only explicit calls to ParallelLogger."
+    ))
+    return()
   }
-  options(error = logBaseError)
-
-  options(warning.expression = quote({
-    evaluate <- function(message, frameIndex) {
-      if (frameIndex < -20) {
-        return(as.character(force(message)))
-      } else {
-        text <- tryCatch(as.character(eval(message, envir = sys.frame(frameIndex))),
-                         error = function(x) "error")
-        if (text == "error") {
-          return(evaluate(message, frameIndex - 2))
-        } else {
-          return(text)
-        }
-      }
-    }
-
-    for (i in 1:sys.nframe()) {
-      frame <- sys.call(-i)
-      if (!is.null(frame) && length(frame) > 1) {
-        name <- as.character(frame[[1]])
-        if (length(name) == 1) {
-          if (is.language(frame[[1]]) && name == "warning") {
-          ParallelLogger::logWarn(evaluate(frame[[2]], -i - 1))
-          break
-          } else if (name == ".signalSimpleWarning") {
-          ParallelLogger::logWarn(frame[[2]])
-          break
-          } else if (name == ".Deprecated") {
-          ParallelLogger::logWarn("This function is deprecated. Use '", frame[[2]], "' instead.")
-          break
-          }
-        }
-      }
-    }
-  }))
+  globalCallingHandlers(condition = conditionHandler)
 }
 
 getDefaultLoggerSettings <- function() {
@@ -84,9 +62,7 @@ getLoggerSettings <- function() {
   if (is.null(settings)) {
     settings <- getDefaultLoggerSettings()
   }
-  if (is.null(getOption("warning.expression"))) {
-    registerDefaultHandlers()
-  }
+  registerDefaultHandlers()
   return(settings)
 }
 
@@ -106,8 +82,9 @@ setLoggerSettings <- function(settings) {
 #'
 #' @export
 registerLogger <- function(logger) {
-  if (!is(logger, "Logger"))
+  if (!is(logger, "Logger")) {
     stop("Logger must be of class 'Logger'")
+  }
   settings <- getLoggerSettings()
   settings$loggers[[length(settings$loggers) + 1]] <- logger
   setLoggerSettings(settings)
@@ -191,26 +168,34 @@ clearLoggers <- function() {
 
 
 levelToInt <- function(level) {
-  if (level == "TRACE")
+  if (level == "TRACE") {
     return(1)
-  if (level == "DEBUG")
+  }
+  if (level == "DEBUG") {
     return(2)
-  if (level == "INFO")
+  }
+  if (level == "INFO") {
     return(3)
-  if (level == "WARN")
+  }
+  if (level == "WARN") {
     return(4)
-  if (level == "ERROR")
+  }
+  if (level == "ERROR") {
     return(5)
-  if (level == "FATAL")
+  }
+  if (level == "FATAL") {
     return(6)
+  } else {
+    (stop(paste(level, "is an invalid level")))
+  }
 }
 
-log <- function(level, ...) {
+log <- function(level, ..., echoToConsole = TRUE) {
   message <- .makeMessage(...)
   settings <- getLoggerSettings()
   for (logger in settings$loggers) {
     if (levelToInt(level) >= levelToInt(logger$threshold)) {
-      logger$logFunction(this = logger, level = level, message = message)
+      logger$logFunction(this = logger, level = level, message = message, echoToConsole = echoToConsole)
     }
   }
 }
@@ -246,7 +231,8 @@ logDebug <- function(...) {
 #' Log a message at the INFO level
 #'
 #' @details
-#' Log a message at the specified level. The message will be sent to all the registered loggers.
+#' Log a message at the specified level. The message will be sent to all the registered loggers. This
+#' is equivalent to calling R's native \code{message()} function.
 #'
 #' @param ...   Zero or more objects which can be coerced to character (and which are pasted together
 #'              with no separator).
@@ -300,4 +286,3 @@ logError <- function(...) {
 logFatal <- function(...) {
   log(level = "FATAL", ...)
 }
-

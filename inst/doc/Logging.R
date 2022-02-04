@@ -120,6 +120,8 @@ writeLines(out)
 #  clearLoggers()
 #  addDefaultFileLogger(logFileName)
 #  
+#  message("Hello")
+#  
 #  warning("Danger!")
 #  
 #  # This throws a warning:
@@ -131,7 +133,8 @@ writeLines(out)
 #  writeLines(readChar(logFileName, file.info(logFileName)$size))
 
 ## ----echo=FALSE---------------------------------------------------------------
-out <- "2021-02-23 09:04:09\t[Main thread]\tWARN\tevaluate\ttiming_fn\tDanger!
+out <- "2021-02-23 09:04:09\t[Main thread]\tWARN\tevaluate\ttiming_fn\tHello
+2021-02-23 09:04:09\t[Main thread]\tWARN\tevaluate\ttiming_fn\tDanger!
 2021-02-23 09:04:09\t[Main thread]\tWARN\tevaluate\ttiming_fn\tWarning: NAs introduced by coercion
 2021-02-23 09:04:09\t[Main thread]\tFATAL\tevaluate\ttiming_fn\tError: object a not found"
 writeLines(out)
