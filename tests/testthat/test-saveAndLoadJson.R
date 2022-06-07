@@ -17,6 +17,53 @@ test_that("data.frame restore", {
   expect_equivalent(settings, settings2)
 })
 
+test_that("tibble restore", {
+  fileName <- tempfile()
+  settings <- list(
+    a = "a",
+    b = tibble::tibble(
+      x = c(1, 2, 3),
+      y = c("p", "q", "r")
+    )
+  )
+  saveSettingsToJson(settings, fileName)
+  settings2 <- loadSettingsFromJson(fileName)
+  unlink(fileName)
+  expect_equal(class(settings$b), class(settings2$b))
+  expect_equivalent(settings, settings2)
+})
+
+test_that("Named class member restore", {
+  fileName <- tempfile()
+  b = list(
+    x = c(1, 2, 3),
+    y = c("p", "q", "r")
+  )
+  class(b) <- "MyClass"
+  settings <- list(
+    a = "a",
+    b = b  
+  )
+  saveSettingsToJson(settings, fileName)
+  settings2 <- loadSettingsFromJson(fileName)
+  unlink(fileName)
+  expect_equal(class(settings$b), class(settings2$b))
+  expect_equivalent(settings, settings2)
+})
+
+test_that("Unnamed list restore (and not named)", {
+  fileName <- tempfile()
+  x <- list(a = 1, b= 2)
+  class(x) <- "MyClass"
+  settings <- list(x,x)
+  saveSettingsToJson(settings, fileName)
+  settings2 <- loadSettingsFromJson(fileName)
+  unlink(fileName)
+  expect_equal(class(settings$b), class(settings2$b))
+  expect_equivalent(settings, settings2)
+  expect_equal(names(settings), names(settings2))
+})
+
 
 test_that("list with empty vectors", {
   fileName <- tempfile()
@@ -49,9 +96,9 @@ test_that("list with object with member function", {
   })
   objList <- list(obj)
   saveSettingsToJson(objList, fileName)
-
+  
   objList2 <- loadSettingsFromJson(fileName)
   unlink(fileName)
-
+  
   expect_equal(obj$fun(10), objList2[[1]]$fun(10))
 })

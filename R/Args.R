@@ -53,9 +53,9 @@ createArgFunction <- function(functionName,
   toChar <- function(x) {
     if (is.null(x)) {
       "NULL"
-    } else if (class(x) == "call") {
+    } else if (is(x, "call")) {
       paste(capture.output(x), collapse = "")
-    } else if (class(x) == "character") {
+    } else if (is(x, "character")) {
       paste("\"", x, "\"", sep = "")
     } else {
       as.character(x)
@@ -68,15 +68,20 @@ createArgFunction <- function(functionName,
     argInfo$default[argInfo$name == names(args)[[i]]] <- args[[i]]
   }
   html <- capture.output(tools::Rd2HTML(.getHelpFile(help(functionName))))
-  xml <- xml2::read_html(paste(html, collapse = "\n"))
-  parameterHelp <- xml2::xml_find_all(xml, "//table[@summary=\"R argblock\"]//tr//td")
-  parameterHelp <- xml2::xml_text(parameterHelp)
-  parameterHelp <- iconv(parameterHelp, from = "UTF-8", to = "ASCII")
+  argsStartPos <- grep("<h3>Arguments</h3>", html) + 1
+  tableEndPos <- grep("</table>", html)
   argInfo$help <- ""
-  for (i in 1:(length(parameterHelp) / 2)) {
-    argInfo$help[argInfo$name == parameterHelp[i * 2 - 1]] <- gsub("\n", " ", parameterHelp[i * 2])
+  if (length(argsStartPos) == 1 && length(tableEndPos) > 0) {
+    argsEndPos <- min(tableEndPos[tableEndPos > argsStartPos])
+    parameterHelp <- xml2::read_html(paste(html[argsStartPos:argsEndPos], collapse = "\n"))
+    parameterHelp <- xml2::xml_find_all(parameterHelp, "//table//tr//td")
+    parameterHelp <- xml2::xml_text(parameterHelp)
+    parameterHelp <- iconv(parameterHelp, from = "UTF-8", to = "ASCII")
+    
+    for (i in 1:(length(parameterHelp) / 2)) {
+      argInfo$help[argInfo$name == parameterHelp[i * 2 - 1]] <- gsub("\n", " ", parameterHelp[i * 2])
+    }
   }
-
   if (length(rCode) != 0) {
     rCode <- c(rCode, "")
   }
@@ -92,10 +97,10 @@ createArgFunction <- function(functionName,
   rCode <- c(rCode, "#' @export")
   if (missing(newName)) {
     createFunArgsName <- paste("create",
-      toupper(substr(functionName, 1, 1)),
-      substr(functionName, 2, nchar(functionName)),
-      "Args",
-      sep = ""
+                               toupper(substr(functionName, 1, 1)),
+                               substr(functionName, 2, nchar(functionName)),
+                               "Args",
+                               sep = ""
     )
   } else {
     createFunArgsName <- newName
@@ -117,7 +122,7 @@ createArgFunction <- function(functionName,
     } else {
       end <- paste(end, ",", sep = "")
     }
-
+    
     rCode <- c(rCode, paste(start, argInfo$name[i], end, sep = ""))
   }
   rCode <- c(rCode, "  analysis <- list()")
@@ -280,7 +285,12 @@ convertAttrToMember <- function(object) {
       }
     }
     a <- names(attributes(object))
-    a <- a[a != "names"]
+    a <- a[!a %in% c("names", "class")]
+    class <- class(object)
+    if (length(class) > 1 || class != "list") {
+      class(object) <- "list"
+      object$attr_class <- class
+    }
     if (length(a) > 0) {
       object[paste("attr", a, sep = "_")] <- attributes(object)[a]
     }
@@ -344,6 +354,7 @@ convertSettingsToJson <- function(object) {
 #'
 #' @export
 saveSettingsToJson <- function(object, fileName) {
+  fileName <- normalizePath(fileName, mustWork = FALSE)
   json <- convertSettingsToJson(object)
   write(json, fileName)
 }
@@ -379,6 +390,9 @@ convertJsonToSettings <- function(json) {
 #'
 #' @export
 loadSettingsFromJson <- function(fileName) {
+  fileName <- normalizePath(fileName)
+  if (!file.exists(fileName))
+    stop(sprintf("File '%s' not found", fileName))
   json <- readChar(fileName, file.info(fileName)$size)
   object <- convertJsonToSettings(json)
   return(object)
@@ -387,7 +401,7 @@ loadSettingsFromJson <- function(fileName) {
 restoreDataFrames <- function(object) {
   if (is.list(object)) {
     if (length(object) > 0) {
-      if (class(object[[1]]) == "data.frame") {
+      if (is(object[[1]], "data.frame")) {
         object <- do.call("rbind", object)
       } else {
         for (i in 1:length(object)) {

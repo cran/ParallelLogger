@@ -1,3 +1,17 @@
+ParallelLogger 3.0.1
+====================
+
+Changes
+
+1. Throw more informative error message if file not found in `loadSettingsFromJson()`.
+
+Bugfixes
+
+1. Fixing extraction of parameter documentation in `createArgFunction()` on R >= 4.2.0.
+
+2. Fixes error when saving and loading tibbles to JSON.
+
+
 ParallelLogger 3.0.0
 ====================
 
