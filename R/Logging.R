@@ -62,16 +62,11 @@ getDefaultLoggerSettings <- function() {
 }
 
 getLoggerSettings <- function() {
-  settings <- getOption("loggerSettings")
-  if (is.null(settings)) {
-    settings <- getDefaultLoggerSettings()
-  }
-  registerDefaultHandlers()
-  return(settings)
+  return(getOption("loggerSettings", default = NULL))
 }
 
 setLoggerSettings <- function(settings) {
-  options(loggerSettings = settings)
+  options("loggerSettings" = settings)
 }
 
 #' Register a logger
@@ -90,6 +85,10 @@ registerLogger <- function(logger) {
     stop("Logger must be of class 'Logger'")
   }
   settings <- getLoggerSettings()
+  if (is.null(settings)) {
+    settings <- getDefaultLoggerSettings()
+    registerDefaultHandlers()
+  }
   settings$loggers[[length(settings$loggers) + 1]] <- logger
   setLoggerSettings(settings)
   invisible(NULL)
@@ -112,6 +111,12 @@ registerLogger <- function(logger) {
 #' @export
 unregisterLogger <- function(x, silent = FALSE) {
   settings <- getLoggerSettings()
+  if (is.null(settings)) {
+    if (!silent) {
+      warning("Could not find logger ", x, " because no logger has been registered")
+    }
+    return(FALSE)
+  }
   if (is.integer(x) || is.numeric(x)) {
     if (x <= length(settings$loggers)) {
       settings$loggers[[x]] <- NULL
@@ -158,7 +163,11 @@ unregisterLogger <- function(x, silent = FALSE) {
 #' @export
 getLoggers <- function() {
   settings <- getLoggerSettings()
-  return(settings$loggers)
+  if (is.null(settings)) {
+    return(list())
+  } else {
+    return(settings$loggers)
+  }
 }
 
 #' Remove all registered loggers
@@ -166,8 +175,10 @@ getLoggers <- function() {
 #' @export
 clearLoggers <- function() {
   settings <- getLoggerSettings()
-  settings$loggers <- list()
-  setLoggerSettings(settings)
+  if (!is.null(settings)) {
+    settings$loggers <- list()
+    setLoggerSettings(settings)
+  }
 }
 
 
@@ -197,9 +208,24 @@ levelToInt <- function(level) {
 log <- function(level, ..., echoToConsole = TRUE) {
   message <- .makeMessage(...)
   settings <- getLoggerSettings()
-  for (logger in settings$loggers) {
-    if (levelToInt(level) >= levelToInt(logger$threshold)) {
-      logger$logFunction(this = logger, level = level, message = message, echoToConsole = echoToConsole)
+  if (is.null(settings)) {
+    # No logger has been registered. 
+    defaultOuput(level = level, message = message, echoToConsole = echoToConsole)
+  } else {
+    for (logger in settings$loggers) {
+      if (levelToInt(level) >= levelToInt(logger$threshold)) {
+        logger$logFunction(this = logger, level = level, message = message, echoToConsole = echoToConsole)
+      }
+    }
+  }
+}
+
+defaultOuput <- function(level, message, echoToConsole) {
+  if (echoToConsole) {
+    if (level == "WARN" || level == "ERROR" || level == "FATAL") {
+      writeLines(message, con = stderr())
+    } else {
+      writeLines(message, con = stdout())
     }
   }
 }
