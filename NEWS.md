@@ -1,3 +1,16 @@
+ParallelLogger 3.3.0
+====================
+
+Changes
+
+1. Switching from `mailR` to `sendmailR` for sending e-mails, which has fewer dependencies.
+
+Bugfixes
+
+1. Fixing test for whether packages exist, which was causing errors on some Linux versions.
+
+
+
 ParallelLogger 3.2.0
 ====================
 
