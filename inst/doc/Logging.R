@@ -1,7 +1,7 @@
-## -----------------------------------------------------------------------------
+## ----echo = FALSE, message = FALSE, warning = FALSE, results = "hide"---------
 !is.null(knitr::opts_knit$get("out.format"))
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  logger <- createLogger(name = "SIMPLE",
 #                         threshold = "INFO",
 #                         appenders = list(createConsoleAppender(layout = layoutTimestamp)))
@@ -12,12 +12,12 @@
 #  
 #  logInfo("Hello world")
 
-## ---- echo=FALSE--------------------------------------------------------------
+## ----echo=FALSE---------------------------------------------------------------
 out <- "Hello world
 2021-02-23 09:04:06 Hello world"
 writeLines(out)
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  clearLoggers()
 #  
 #  logger <- createLogger(name = "SIMPLE",
@@ -28,18 +28,18 @@ writeLines(out)
 #  
 #  logInfo("Hello world")
 
-## ---- echo=FALSE--------------------------------------------------------------
+## ----echo=FALSE---------------------------------------------------------------
 writeLines("2021-02-23 09:04:06 Hello world")
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  addDefaultConsoleLogger()
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  registerLogger(createLogger(name = "DEFAULT_CONSOLE_LOGGER",
 #                              threshold = "INFO",
 #                              appenders = list(createConsoleAppender(layout = layoutSimple))))
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  logFileName <- "log.txt"
 #  
 #  logger <- createLogger(name = "PARALLEL",
@@ -54,10 +54,10 @@ writeLines("2021-02-23 09:04:06 Hello world")
 #  
 #  logInfo("Hello world")
 
-## ---- echo=FALSE--------------------------------------------------------------
+## ----echo=FALSE---------------------------------------------------------------
 writeLines("2021-02-23 09:04:06 Hello world")
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  writeLines(readChar(logFileName, file.info(logFileName)$size))
 
 ## ----echo=FALSE---------------------------------------------------------------
@@ -66,22 +66,22 @@ out <- "2021-02-23 09:04:06\t[Main thread]\tTRACE\tevaluate\ttiming_fn\tExecuted
 2021-02-23 09:04:06\t[Main thread]\tINFO\tevaluate\ttiming_fn\tHello world"
 writeLines(out)
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  unlink(logFileName)
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  addDefaultFileLogger(logFileName)
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  registerLogger(createLogger(name = "DEFAULT_FILE_LOGGER",
 #                              threshold = "TRACE",
 #                              appenders = list(createFileAppender(layout = layoutParallel,
 #                                                                  fileName = logFileName))))
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  addDefaultErrorReportLogger()
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  fileName <- file.path(getwd(), "errorReportR.txt")
 #  
 #  registerLogger(createLogger(name = "DEFAULT_ERRORREPORT_LOGGER",
@@ -91,7 +91,7 @@ writeLines(out)
 #                                                                  overwrite = TRUE,
 #                                                                  expirationTime = 60))))
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  mailSettings <- list(from = "someone@gmail.com",
 #  to = c("someone_else@gmail.com"),
 #  smtp = list(host.name = "smtp.gmail.com",
@@ -110,16 +110,16 @@ writeLines(out)
 #  
 #  logFatal("No more data to process")
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  addDefaultEmailLogger(mailSettings)
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  registerLogger(createLogger(name = "DEFAULT_EMAIL_LOGGER",
 #  threshold = "FATAL",
 #  appenders = list(createEmailAppender(layout = layoutEmail,
 #  mailSettings = mailSettings))))
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  clearLoggers()
 #  addDefaultFileLogger(logFileName)
 #  
@@ -142,7 +142,7 @@ out <- "2021-02-23 09:04:09\t[Main thread]\tWARN\tevaluate\ttiming_fn\tHello
 2021-02-23 09:04:09\t[Main thread]\tFATAL\tevaluate\ttiming_fn\tError: object a not found"
 writeLines(out)
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  clearLoggers() # Clean up the loggers from the previous example
 #  
 #  addDefaultFileLogger(logFileName)
@@ -183,7 +183,7 @@ out <- "2021-02-23 09:04:09\t[Main thread]\tTRACE\tevaluate timing_fn Initiating
 2021-02-23 09:04:13\t[Thread 2]\tTRACE\t\tThread 2 terminated"
 writeLines(out)
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  subSubTask <- function() {
 #    addDefaultFileLogger("subSubTaskLog.txt")
 #    # do something
@@ -201,7 +201,7 @@ writeLines(out)
 #    subTask()
 #  }
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  subSubTask <- function() {
 #    # do something
 #  }
@@ -217,13 +217,13 @@ writeLines(out)
 #    subTask()
 #  }
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  mainTask <- function() {
 #    addDefaultFileLogger("log.txt")
 #    on.exit(unregisterLogger("DEFAULT_FILE_LOGGER"))
 #    # do something
 #  }
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  launchLogViewer(logFileName)
 

@@ -2,8 +2,8 @@ Package: ParallelLogger
 Type: Package
 Title: Support for Parallel Computation, Logging, and Function
         Automation
-Version: 3.3.0
-Date: 2023-08-22
+Version: 3.3.1
+Date: 2024-08-23
 Authors@R: c(
   person("Martijn", "Schuemie", email = "schuemie@ohdsi.org", role = c("aut", "cre")),
   person("Marc", "Suchard", role = c("aut")),
@@ -22,11 +22,11 @@ URL: https://ohdsi.github.io/ParallelLogger/,
         https://github.com/OHDSI/ParallelLogger
 BugReports: https://github.com/OHDSI/ParallelLogger/issues
 NeedsCompilation: no
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 Encoding: UTF-8
-Packaged: 2023-08-22 11:49:57 UTC; MSCHUEMI
+Packaged: 2024-08-23 06:37:10 UTC; schuemie
 Author: Martijn Schuemie [aut, cre],
   Marc Suchard [aut],
   Observational Health Data Science and Informatics [cph]
 Repository: CRAN
-Date/Publication: 2023-08-22 14:50:02 UTC
+Date/Publication: 2024-08-23 08:00:06 UTC

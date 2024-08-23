@@ -1,6 +1,6 @@
 # @file Args.R
 #
-# Copyright 2022 Observational Health Data Sciences and Informatics
+# Copyright 2024 Observational Health Data Sciences and Informatics
 #
 # This file is part of ParallelLogger
 #
@@ -316,6 +316,9 @@ convertMemberToAttr <- function(object) {
         object$attr_class <- NULL
         attrNames <- attrNames[attrNames != "attr_class"]
         cleanNames <- cleanNames[cleanNames != "class"]
+      }
+      if (any(cleanNames == "row.names") &&  length(object$attr_row.names) ==  0) {
+        object$attr_row.names <- as.character(c())
       }
       attributes(object)[cleanNames] <- object[attrNames]
       object[attrNames] <- NULL
