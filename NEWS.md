@@ -1,3 +1,13 @@
+ParallelLogger 3.4.2
+====================
+
+Bugfixes
+
+1. The `getPhysicalMemory()` package now uses the `memuse` package, for simplicity and better reliability.
+
+2. Fixed problem with detection of running as notebook that prevented registration of loggers.
+
+
 ParallelLogger 3.4.1
 ====================
 

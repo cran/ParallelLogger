@@ -39,10 +39,25 @@ handlersRegistered <- function() {
   }
 }
 
-#' @importFrom rstudioapi getActiveDocumentContext
-isRunningInNotebookChunk = function() {
-  isTRUE(try(rstudioapi::getActiveDocumentContext()$id != "#console", 
-             silent=TRUE))
+# Adapted from https://stackoverflow.com/questions/41197626/determine-if-script-is-running-within-an-rstudio-notebook
+isRunningInNotebookChunk <- function() {
+  if (!rstudioapi::isAvailable()) {
+    return(FALSE)
+  }
+  
+  ctxt <- rstudioapi::getActiveDocumentContext()
+  if (grepl("(\\.rmd$)|(\\.qmd$)", ctxt$path, ignore.case = TRUE)) {
+    return(TRUE)
+  }
+  
+  # Look for _notebook within the header if the file hasn't been saved
+  contents <- ctxt$contents
+  header <- grep("^---", contents)
+  if (length(header) == 2) {
+    return(any(grepl("^format:", contents[min(header) : max(header)])))
+  }
+  
+  return(FALSE)
 }
 
 registerDefaultHandlers <- function() {
