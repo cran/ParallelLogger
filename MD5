@@ -1,9 +1,9 @@
-b1ce14a4d09224c9a4007f580be6280e *DESCRIPTION
+e32de13218620712c8e43bfe1869657c *DESCRIPTION
 4a90459b48e679c515ae7b684fdca077 *NAMESPACE
-3422e287006cb86e02b70153e28f2eda *NEWS.md
+27764430a143d5429e457c0da297d176 *NEWS.md
 d68e23403d2cb7ae24d96075a1733e3b *R/Appenders.R
 e19386c96c3fc11e9b277ab1ed1dcdec *R/Args.R
-aacd5adf2a94bff10ae1745a76acfa42 *R/Cluster.R
+6d81db1227363030fcb8f33c1703764d *R/Cluster.R
 e54f64d3efa517d7da0336f8379532ba *R/Layouts.R
 954ca5fdf1c99b1da116a9794ec38e7f *R/Loggers.R
 33dd73bf401a88eb15b179f76a7fffe2 *R/Logging.R
@@ -13,10 +13,10 @@ e54f64d3efa517d7da0336f8379532ba *R/Layouts.R
 7eba0dfd3b0bcb3e803d58f33010dbaa *build/vignette.rds
 abcb2d7ff5fb1b8d778d35ac5316c582 *inst/doc/Logging.R
 01924b71ae3687047c8286a5ec8280b1 *inst/doc/Logging.Rmd
-445b58f7cebf249bbf72ab958e488d5f *inst/doc/Logging.pdf
+cffa76efa8061ec18a2614840664143f *inst/doc/Logging.pdf
 79868cb0bc7784efc1470b00539c0f70 *inst/doc/Parallel.R
 173b0b3974bbffe1459fd27bfdf4e2c2 *inst/doc/Parallel.Rmd
-cd21d3f73f5bc7d6ba20821e5b13bced *inst/doc/Parallel.pdf
+fda783da78f663403214c0fd99de9753 *inst/doc/Parallel.pdf
 d449b342c6753a331051d9e7c4de534c *inst/shinyApps/LogViewer/global.R
 c7f3ce4339c882f04a91ecaa02fa3c74 *inst/shinyApps/LogViewer/server.R
 4594eeb22bad0abc476c3017667738fd *inst/shinyApps/LogViewer/ui.R
@@ -53,7 +53,7 @@ ac079353a4fc3d3ffaffb8941946ba31 *man/logFatal.Rd
 b99b3e15a8a1af54b3f7d8e2dc9560e9 *man/logInfo.Rd
 57714f9e19369c0f4fe9324d71df9edf *man/logTrace.Rd
 f29f35e3300f88eb9637e71057fccacf *man/logWarn.Rd
-b1436b6097798e5211c88ef7d1316d04 *man/makeCluster.Rd
+a99e2c8e6828c8ee700757485248431a *man/makeCluster.Rd
 d5fb8461c5d9279726c33e7bbd20ba4b *man/matchInList.Rd
 df490880fe95098791528f67087cd5d6 *man/registerLogger.Rd
 02bcad5528682eba865ae735fe429adb *man/saveSettingsToJson.Rd
@@ -64,7 +64,7 @@ ff2ca6d7ca93cbbaac649d00b3d186a8 *man/unregisterLogger.Rd
 c70c3aa78c9b90e231817ddd373fb213 *tests/testthat/test-Appenders.R
 e3165647d1818be54d5ed163bf1377a2 *tests/testthat/test-ShinyApps.R
 81dcef60b2e114ee96df06487eae2487 *tests/testthat/test-args.R
-76d75d2d91b75054b26dd50c95037126 *tests/testthat/test-cluster.R
+66edd80b3c261d6229c455ac94d9861e *tests/testthat/test-cluster.R
 e26b42a01d20039c6e4fb9c7e391b4fc *tests/testthat/test-layouts.R
 d4ac3a6015c06e8fb97033349be1c3a2 *tests/testthat/test-loggers.R
 935095c1d5738be76bb3f0ff7e3350f0 *tests/testthat/test-logging.R
