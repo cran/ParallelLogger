@@ -1,9 +1,9 @@
-e32de13218620712c8e43bfe1869657c *DESCRIPTION
+e6b7e348e588aed1f3f8a319ea15181d *DESCRIPTION
 4a90459b48e679c515ae7b684fdca077 *NAMESPACE
-27764430a143d5429e457c0da297d176 *NEWS.md
+b2c890cabe38e04f75da77daa628c154 *NEWS.md
 d68e23403d2cb7ae24d96075a1733e3b *R/Appenders.R
 e19386c96c3fc11e9b277ab1ed1dcdec *R/Args.R
-6d81db1227363030fcb8f33c1703764d *R/Cluster.R
+112c781f026bbedba11f27f0852bd694 *R/Cluster.R
 e54f64d3efa517d7da0336f8379532ba *R/Layouts.R
 954ca5fdf1c99b1da116a9794ec38e7f *R/Loggers.R
 33dd73bf401a88eb15b179f76a7fffe2 *R/Logging.R
@@ -13,10 +13,10 @@ e54f64d3efa517d7da0336f8379532ba *R/Layouts.R
 7eba0dfd3b0bcb3e803d58f33010dbaa *build/vignette.rds
 abcb2d7ff5fb1b8d778d35ac5316c582 *inst/doc/Logging.R
 01924b71ae3687047c8286a5ec8280b1 *inst/doc/Logging.Rmd
-cffa76efa8061ec18a2614840664143f *inst/doc/Logging.pdf
+d50dfbe169e7fef2dddc0ed83a160930 *inst/doc/Logging.pdf
 79868cb0bc7784efc1470b00539c0f70 *inst/doc/Parallel.R
 173b0b3974bbffe1459fd27bfdf4e2c2 *inst/doc/Parallel.Rmd
-fda783da78f663403214c0fd99de9753 *inst/doc/Parallel.pdf
+5f31f7082e2916c302892375d44da159 *inst/doc/Parallel.pdf
 d449b342c6753a331051d9e7c4de534c *inst/shinyApps/LogViewer/global.R
 c7f3ce4339c882f04a91ecaa02fa3c74 *inst/shinyApps/LogViewer/server.R
 4594eeb22bad0abc476c3017667738fd *inst/shinyApps/LogViewer/ui.R
@@ -53,7 +53,7 @@ ac079353a4fc3d3ffaffb8941946ba31 *man/logFatal.Rd
 b99b3e15a8a1af54b3f7d8e2dc9560e9 *man/logInfo.Rd
 57714f9e19369c0f4fe9324d71df9edf *man/logTrace.Rd
 f29f35e3300f88eb9637e71057fccacf *man/logWarn.Rd
-a99e2c8e6828c8ee700757485248431a *man/makeCluster.Rd
+851dce298fdcd3fc64d41b6e88190422 *man/makeCluster.Rd
 d5fb8461c5d9279726c33e7bbd20ba4b *man/matchInList.Rd
 df490880fe95098791528f67087cd5d6 *man/registerLogger.Rd
 02bcad5528682eba865ae735fe429adb *man/saveSettingsToJson.Rd
